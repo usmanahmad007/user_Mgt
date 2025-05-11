@@ -2,9 +2,11 @@ from flask import Flask, request, render_template, redirect, url_for, session, f
 import json
 import os
 
+
 app = Flask(__name__)
 app.secret_key = 'secret_key'
 DATA_FILE = 'users.txt'
+
 
 # --------- Helper Functions ---------
 def read_users():
@@ -14,11 +16,9 @@ def read_users():
         return json.load(f)
 
 
-
 def write_users(users):
     with open(DATA_FILE, 'w') as f:
         json.dump(users, f, indent=4)
-
 
 
 def authenticate(email, password):
@@ -26,14 +26,11 @@ def authenticate(email, password):
     user = users.get(email)
     return user and user['password'] == password
 
+
 # --------- Routes ---------
-
-
-
 @app.route('/')
 def main():
     return render_template('main.html')
-
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -52,8 +49,6 @@ def register():
     return render_template('register.html')
 
 
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -68,8 +63,6 @@ def login():
     return render_template('login.html')
 
 
-
-
 @app.route('/home')
 def home():
     email = session.get('email')
@@ -79,8 +72,6 @@ def home():
     users = read_users()
     user = users.get(email)
     return render_template('home.html', user=user)
-
-
 
 
 @app.route('/update', methods=['POST'])
@@ -102,7 +93,6 @@ def update():
     return redirect(url_for('home'))
 
 
-
 @app.route('/delete', methods=['POST'])
 def delete():
     email = session.get('email')
@@ -116,18 +106,13 @@ def delete():
     return redirect(url_for('main'))
 
 
-
-
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('main'))
 
+
 # --------- API Routes ---------
-
-
-
-
 @app.route('/add_user', methods=['POST'])
 def add_user():
     data = request.get_json()
@@ -147,8 +132,6 @@ def add_user():
     return "User added successfully", 201
 
 
-
-
 @app.route('/get_user/<email>', methods=['GET'])
 def get_user(email):
     users = read_users()
@@ -156,8 +139,6 @@ def get_user(email):
     if not user:
         return "User not found", 404
     return json.dumps(user), 200
-
-
 
 
 @app.route('/update_user/<email>', methods=['PUT'])
@@ -180,8 +161,6 @@ def update_user(email):
     return "User updated successfully", 200
 
 
-
-
 @app.route('/delete_user/<email>', methods=['DELETE'])
 def delete_user(email):
     users = read_users()
@@ -191,7 +170,6 @@ def delete_user(email):
     users.pop(email, None)
     write_users(users)
     return "User deleted successfully", 200
-
 
 
 if __name__ == '__main__':
