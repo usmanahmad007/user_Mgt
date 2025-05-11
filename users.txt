@@ -1,0 +1,7 @@
+{
+    "silentboy78600@gmail.com": {
+        "email": "silentboy78600@gmail.com",
+        "age": "25",
+        "password": "12345"
+    }
+}

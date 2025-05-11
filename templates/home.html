@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f4f8ec;
+            padding: 40px;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #bbb;
+            width: 400px;
+            margin: auto;
+        }
+        h2, h3 {
+            text-align: center;
+        }
+        p {
+            font-size: 16px;
+        }
+        form input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        form button {
+            background-color: #34495e;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 10px;
+            width: 100%;
+            border-radius: 5px;
+        }
+        form button:hover {
+            background-color: #2c3e50;
+        }
+        .logout {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logout a {
+            color: #e74c3c;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, {{ user.email }}</h2>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Age:</strong> {{ user.age }}</p>
+
+        <h3>Update Profile</h3>
+        <form method="POST" action="/update">
+            <input type="number" name="age" placeholder="New Age">
+            <input type="password" name="password" placeholder="New Password">
+            <button type="submit">Update</button>
+        </form>
+
+        <h3>Delete Account</h3>
+        <form method="POST" action="/delete">
+            <button type="submit" onclick="return confirm('Are you sure?')">Delete My Account</button>
+        </form>
+
+        <div class="logout">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
