@@ -13,9 +13,13 @@ def read_users():
     with open(DATA_FILE, 'r') as f:
         return json.load(f)
 
+
+
 def write_users(users):
     with open(DATA_FILE, 'w') as f:
         json.dump(users, f, indent=4)
+
+
 
 def authenticate(email, password):
     users = read_users()
@@ -24,9 +28,13 @@ def authenticate(email, password):
 
 # --------- Routes ---------
 
+
+
 @app.route('/')
 def main():
     return render_template('main.html')
+
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -43,6 +51,9 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html')
 
+
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -56,6 +67,9 @@ def login():
             return render_template('login.html', message="Invalid credentials.")
     return render_template('login.html')
 
+
+
+
 @app.route('/home')
 def home():
     email = session.get('email')
@@ -65,6 +79,9 @@ def home():
     users = read_users()
     user = users.get(email)
     return render_template('home.html', user=user)
+
+
+
 
 @app.route('/update', methods=['POST'])
 def update():
@@ -84,6 +101,8 @@ def update():
     flash('User information updated successfully!')
     return redirect(url_for('home'))
 
+
+
 @app.route('/delete', methods=['POST'])
 def delete():
     email = session.get('email')
@@ -96,12 +115,18 @@ def delete():
     session.clear()
     return redirect(url_for('main'))
 
+
+
+
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('main'))
 
 # --------- API Routes ---------
+
+
+
 
 @app.route('/add_user', methods=['POST'])
 def add_user():
@@ -121,6 +146,9 @@ def add_user():
     write_users(users)
     return "User added successfully", 201
 
+
+
+
 @app.route('/get_user/<email>', methods=['GET'])
 def get_user(email):
     users = read_users()
@@ -128,6 +156,9 @@ def get_user(email):
     if not user:
         return "User not found", 404
     return json.dumps(user), 200
+
+
+
 
 @app.route('/update_user/<email>', methods=['PUT'])
 def update_user(email):
@@ -148,6 +179,9 @@ def update_user(email):
     write_users(users)
     return "User updated successfully", 200
 
+
+
+
 @app.route('/delete_user/<email>', methods=['DELETE'])
 def delete_user(email):
     users = read_users()
@@ -157,6 +191,8 @@ def delete_user(email):
     users.pop(email, None)
     write_users(users)
     return "User deleted successfully", 200
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
